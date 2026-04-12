@@ -1,4 +1,4 @@
-GitHub Pages: https://agentjz.github.io/engineer/
+﻿GitHub Pages: https://agentjz.github.io/engineer/
 
 # 智能体工程文档库
 
@@ -11,8 +11,8 @@ GitHub Pages: https://agentjz.github.io/engineer/
 
 根目录现在主要有两部分：
 
-- [智能体工程宪法原则](智能体工程宪法原则)
-- [智能体工程给AI看的提示词](智能体工程给AI看的提示词)
+- [智能体工程宪法原则](constitution)
+- [智能体工程给AI看的提示词](prompts)
 
 ### 1. 智能体工程宪法原则
 
@@ -28,10 +28,10 @@ GitHub Pages: https://agentjz.github.io/engineer/
 
 建议先从这里开始读：
 
-- [README](智能体工程宪法原则/README.md)
-- [P01 先写规约再执行](智能体工程宪法原则/P01-先写规约再执行.md)
-- [P04 先写失败测试再写实现](智能体工程宪法原则/P04-先写失败测试再写实现.md)
-- [P11 没证据就不能收口](智能体工程宪法原则/P11-没证据就不能收口.md)
+- [README](constitution/README.md)
+- [P01 先写规约再执行](constitution/P01.md)
+- [P04 先写失败测试再写实现](constitution/P04.md)
+- [P11 没证据就不能收口](constitution/P11.md)
 
 ### 2. 智能体工程给AI看的提示词
 
@@ -51,11 +51,11 @@ GitHub Pages: https://agentjz.github.io/engineer/
 
 建议从这里开始：
 
-- [README](智能体工程给AI看的提示词/README.md)
-- [01 进入智能体工程模式提示词](智能体工程给AI看的提示词/01-进入智能体工程模式提示词.md)
-- [02 补最小可执行规约提示词](智能体工程给AI看的提示词/02-补最小可执行规约提示词.md)
-- [05 先写失败测试提示词](智能体工程给AI看的提示词/05-先写失败测试提示词.md)
-- [08 做集成验收与收口提示词](智能体工程给AI看的提示词/08-做集成验收与收口提示词.md)
+- [README](prompts/README.md)
+- [01 进入智能体工程模式提示词](prompts/01.md)
+- [02 补最小可执行规约提示词](prompts/02.md)
+- [05 先写失败测试提示词](prompts/05.md)
+- [08 做集成验收与收口提示词](prompts/08.md)
 
 ## 怎么使用
 
@@ -122,3 +122,4 @@ GitHub Pages: https://agentjz.github.io/engineer/
 - 后端服务专用提示词
 - 多人协作 / 多智能体协作专用提示词
 - 交付与演进链路的模板化
+

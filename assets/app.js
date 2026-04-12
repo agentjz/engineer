@@ -1,6 +1,7 @@
 const state = {
   primaryDocs: [],
   allowedDocs: new Set(),
+  docTitleMap: new Map(),
   primaryMap: new Map(),
   primarySectionMap: new Map(),
   docKeyToPath: new Map(),
@@ -50,7 +51,14 @@ async function initializePage() {
 
     const siteIndex = await loadIndex();
     state.primaryDocs = siteIndex.primaryDocs || [];
-    state.allowedDocs = new Set((siteIndex.allowedDocs || []).map(normalizePath));
+    state.allowedDocs = new Set(
+      (siteIndex.allowedDocs || []).map((doc) => normalizePath(getDocPath(doc))),
+    );
+    state.docTitleMap = new Map(
+      (siteIndex.allowedDocs || [])
+        .filter((doc) => typeof doc === "object" && doc && doc.path && doc.title)
+        .map((doc) => [normalizePath(doc.path), doc.title]),
+    );
     state.primaryMap = new Map(state.primaryDocs.map((doc) => [normalizePath(doc.path), doc]));
     state.primarySectionMap = new Map(
       state.primaryDocs.map((doc) => [normalizePath(doc.path), doc.id]),
@@ -416,6 +424,11 @@ function titleFromPath(path) {
     return primaryDoc.title;
   }
 
+  const mappedTitle = state.docTitleMap.get(normalized);
+  if (mappedTitle) {
+    return mappedTitle;
+  }
+
   const parts = normalized.split("/");
   const fileName = parts[parts.length - 1] || "";
   const plainName = fileName.replace(/\.md$/i, "");
@@ -429,17 +442,21 @@ function titleFromPath(path) {
 
 function createDocKey(path) {
   const normalized = normalizePath(path);
-  const constitutionMatch = normalized.match(/\/(P\d+)-/i);
+  const constitutionMatch = normalized.match(/\/(P\d+)(?:\.md|-)/i);
   if (constitutionMatch) {
     return constitutionMatch[1].toUpperCase();
   }
 
-  const promptMatch = normalized.match(/\/(\d+)-/);
+  const promptMatch = normalized.match(/\/(\d+)(?:\.md|-)/);
   if (promptMatch) {
     return promptMatch[1];
   }
 
   return "";
+}
+
+function getDocPath(doc) {
+  return typeof doc === "string" ? doc : doc?.path || "";
 }
 
 function slugify(text) {
