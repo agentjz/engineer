@@ -2,6 +2,7 @@ const state = {
   primaryDocs: [],
   allowedDocs: new Set(),
   docTitleMap: new Map(),
+  docContentMap: new Map(),
   primaryMap: new Map(),
   primarySectionMap: new Map(),
   docKeyToPath: new Map(),
@@ -59,6 +60,14 @@ async function initializePage() {
         .filter((doc) => typeof doc === "object" && doc && doc.path && doc.title)
         .map((doc) => [normalizePath(doc.path), doc.title]),
     );
+    state.docContentMap = new Map([
+      ...state.primaryDocs
+        .filter((doc) => typeof doc === "object" && doc && doc.path && typeof doc.content === "string")
+        .map((doc) => [normalizePath(doc.path), doc.content]),
+      ...(siteIndex.allowedDocs || [])
+        .filter((doc) => typeof doc === "object" && doc && doc.path && typeof doc.content === "string")
+        .map((doc) => [normalizePath(doc.path), doc.content]),
+    ]);
     state.primaryMap = new Map(state.primaryDocs.map((doc) => [normalizePath(doc.path), doc]));
     state.primarySectionMap = new Map(
       state.primaryDocs.map((doc) => [normalizePath(doc.path), doc.id]),
@@ -231,6 +240,12 @@ async function handleDocumentClick(event) {
 }
 
 async function fetchMarkdown(path) {
+  const normalizedPath = normalizePath(path);
+  const embeddedContent = state.docContentMap.get(normalizedPath);
+  if (typeof embeddedContent === "string") {
+    return embeddedContent;
+  }
+
   const response = await fetch(toAssetUrl(path), { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to load ${path}: ${response.status}`);
