@@ -20,10 +20,20 @@
           <article class="markdown-body" id="doc-prompts"></article>
         </section>
       </main>
+    </div>
 
-      <aside class="detail-panel is-hidden" id="detailPanel" aria-label="子文档阅读区">
+    <div class="detail-modal is-hidden" id="detailModal" aria-hidden="true">
+      <div class="detail-backdrop" id="detailBackdrop"></div>
+      <aside
+        class="detail-panel"
+        id="detailPanel"
+        aria-label="子文档阅读区"
+        aria-labelledby="detailTitle"
+        aria-modal="true"
+        role="dialog"
+      >
         <div class="detail-head">
-          <button class="back-button" id="closeDetail" type="button">返回主文档</button>
+          <button class="back-button" id="closeDetail" type="button">关闭详情</button>
           <h2 id="detailTitle"></h2>
         </div>
         <article class="markdown-body detail-body" id="detailContent"></article>

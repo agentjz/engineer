@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function bindElements() {
-  elements.page = document.getElementById("page");
+  elements.detailModal = document.getElementById("detailModal");
+  elements.detailBackdrop = document.getElementById("detailBackdrop");
   elements.detailPanel = document.getElementById("detailPanel");
   elements.detailTitle = document.getElementById("detailTitle");
   elements.detailContent = document.getElementById("detailContent");
@@ -27,6 +28,7 @@ function bindElements() {
 
 function bindEvents() {
   elements.closeDetail.addEventListener("click", closeDetail);
+  elements.detailBackdrop.addEventListener("click", closeDetail);
   document.addEventListener("click", handleDocumentClick);
   window.addEventListener("hashchange", applyHashRoute);
   window.addEventListener("keydown", (event) => {
@@ -133,9 +135,7 @@ async function openDetail(path, section = "") {
     elements.detailContent.innerHTML = window.marked.parse(markdown);
     decorateArticle(elements.detailContent, normalizedPath);
 
-    elements.detailPanel.classList.remove("is-hidden");
-    elements.page.classList.add("has-detail");
-    document.body.classList.add("detail-open");
+    showDetail();
     state.currentDetailPath = normalizedPath;
 
     if (section) {
@@ -149,9 +149,7 @@ async function openDetail(path, section = "") {
     console.error(error);
     elements.detailTitle.textContent = titleFromPath(normalizedPath);
     elements.detailContent.innerHTML = '<p class="load-error">文档加载失败。</p>';
-    elements.detailPanel.classList.remove("is-hidden");
-    elements.page.classList.add("has-detail");
-    document.body.classList.add("detail-open");
+    showDetail();
   }
 }
 
@@ -165,10 +163,19 @@ function closeDetail() {
 }
 
 function hideDetail() {
-  elements.detailPanel.classList.add("is-hidden");
-  elements.page.classList.remove("has-detail");
+  elements.detailModal.classList.add("is-hidden");
+  elements.detailModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("detail-open");
   state.currentDetailPath = "";
+}
+
+function showDetail() {
+  elements.detailModal.classList.remove("is-hidden");
+  elements.detailModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("detail-open");
+  requestAnimationFrame(() => {
+    elements.closeDetail.focus({ preventScroll: true });
+  });
 }
 
 async function handleDocumentClick(event) {
